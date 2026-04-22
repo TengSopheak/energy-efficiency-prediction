@@ -12,7 +12,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 DATA_DIR = PROJECT_ROOT / "dataset" / "raw"
 PROCESSED_DIR = PROJECT_ROOT / "dataset" / "processed"
-MODELS_DIR = PROJECT_ROOT / "model"
+MODELS_DIR = PROJECT_ROOT / "src"/ "backend" / "models"
 
 # Ensure directories exist
 for dir_path in [DATA_DIR, PROCESSED_DIR, MODELS_DIR]:
