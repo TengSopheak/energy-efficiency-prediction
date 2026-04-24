@@ -55,14 +55,14 @@ This project uses the Energy Efficiency Dataset from the UCI Machine Learning Re
 ---
 
 ## 📓 Methodology
-1. Exploratory Data Analysis
+### 1. Exploratory Data Analysis
 The first notebook focuses on understanding the dataset. This step helps identify:
 * feature types
 * target distribution
 * relationships between variables
 * possible issues such as missing values or outliers
 
-2. Feature Engineering
+### 2. Feature Engineering  
 The feature engineering pipeline was designed carefully to keep the data clean and avoid leakage.
 * Pre-processing steps
   * Load the dataset from CSV
@@ -80,7 +80,7 @@ The feature engineering pipeline was designed carefully to keep the data clean a
   * Feature selection helped keep only useful inputs for training
   * Splitting before preprocessing helped prevent data leakage
 
-3. Model Experimentation
+### 3. Model Experimentation  
 After preprocessing, the saved datasets were loaded and used to train 8 models:
 * Linear Regression
 * Decision Tree
@@ -98,7 +98,7 @@ Each model was evaluated using:
 * R-squared
 * MAPE Mean Absolute Percentage Error
 
-4. Final Model Training
+### 4. Final Model Training
 After comparison, the best model, XGBoost, was retrained on the full dataset and saved as a .pkl file for future use.
 Model Performance (Detailed Results):
 
