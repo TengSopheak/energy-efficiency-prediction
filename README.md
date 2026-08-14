@@ -4,7 +4,7 @@ A machine learning project for predicting heating load and cooling load from bui
 This is a multi-target regression workflow built end to end, from data exploration and feature engineering to model testing and final deployment.
 
 The project uses:
-* **NextJS** for the frontend
+* **React Vite** for the frontend
 * **FastAPI** for the backend
 * **Python** for the machine learning pipeline
 * **XGBoost** as the final best model
@@ -46,7 +46,7 @@ This project uses the Energy Efficiency Dataset from the UCI Machine Learning Re
 ---
 
 ## 🛠️ Tech Stack
-* Frontend: NextJS
+* Frontend: React Vite
 * Backend: FastAPI
 * Machine Learning: scikit-learn, XGBoost, LightGBM, and other regression models
 * Notebook Workflow: Jupyter Notebook
