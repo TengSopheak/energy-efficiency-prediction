@@ -1,4 +1,25 @@
 function Model() {
+    const overallMetrics = {
+        r2: 0.9943,
+        mae: 0.3498,
+        rmse: 0.6678,
+        mse: 0.5326,
+    };
+
+    const heatingMetrics = {
+        r2: 0.9987,
+        mae: 0.2499,
+        rmse: 0.3733,
+        mse: 0.1394,
+    };
+
+    const coolingMetrics = {
+        r2: 0.9900,
+        mae: 0.4496,
+        rmse: 0.9622,
+        mse: 0.9259,
+    };
+
     return (
         <section id="performance" className="relative py-28 px-6 lg:px-10">
             <div className="max-w-7xl mx-auto">
@@ -36,7 +57,7 @@ function Model() {
                                 />
                                 <circle
                                     className="perf-ring"
-                                    data-target="0.92"
+                                    data-target={overallMetrics.r2}
                                     cx="50"
                                     cy="50"
                                     r="42"
@@ -54,9 +75,9 @@ function Model() {
                             </svg>
                             <div
                                 className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-emerald-400 perf-value"
-                                data-target="0.92"
+                                data-target={overallMetrics.r2}
                             >
-                                0
+                                {overallMetrics.r2.toFixed(2)}
                             </div>
                         </div>
                         <div className="text-center text-xs text-slate-400">
@@ -87,7 +108,7 @@ function Model() {
                                 />
                                 <circle
                                     className="perf-ring"
-                                    data-target="0.18"
+                                    data-target={overallMetrics.mae}
                                     cx="50"
                                     cy="50"
                                     r="42"
@@ -105,9 +126,9 @@ function Model() {
                             </svg>
                             <div
                                 className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-cyan-400 perf-value"
-                                data-target="1.84"
+                                data-target={overallMetrics.mae}
                             >
-                                0
+                                {overallMetrics.mae.toFixed(2)}
                             </div>
                         </div>
                         <div className="text-center text-xs text-slate-400">
@@ -138,7 +159,7 @@ function Model() {
                                 />
                                 <circle
                                     className="perf-ring"
-                                    data-target="0.24"
+                                    data-target={overallMetrics.rmse}
                                     cx="50"
                                     cy="50"
                                     r="42"
@@ -156,9 +177,9 @@ function Model() {
                             </svg>
                             <div
                                 className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-orange-400 perf-value"
-                                data-target="2.41"
+                                data-target={overallMetrics.rmse}
                             >
-                                0
+                                {overallMetrics.rmse.toFixed(2)}
                             </div>
                         </div>
                         <div className="text-center text-xs text-slate-400">
@@ -189,7 +210,7 @@ function Model() {
                                 />
                                 <circle
                                     className="perf-ring"
-                                    data-target="0.12"
+                                    data-target={overallMetrics.mse}
                                     cx="50"
                                     cy="50"
                                     r="42"
@@ -207,9 +228,9 @@ function Model() {
                             </svg>
                             <div
                                 className="absolute inset-0 flex items-center justify-center font-mono text-2xl font-bold text-sky-400 perf-value"
-                                data-target="5.81"
+                                data-target={overallMetrics.mse}
                             >
-                                0
+                                {overallMetrics.mse.toFixed(2)}
                             </div>
                         </div>
                         <div className="text-center text-xs text-slate-400">
@@ -236,13 +257,13 @@ function Model() {
                                         R² Score
                                     </span>
                                     <span className="font-mono text-orange-400">
-                                        0.91
+                                        {heatingMetrics.r2.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-orange-500 to-orange-300 rounded-full"
-                                        data-target="91"
+                                        data-target={heatingMetrics.r2 * 100}
                                         style={{
                                             width: "0%",
                                         }}
@@ -255,13 +276,13 @@ function Model() {
                                         MAE (lower better)
                                     </span>
                                     <span className="font-mono text-orange-400">
-                                        1.72
+                                        {heatingMetrics.mae.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-orange-500 to-orange-300 rounded-full"
-                                        data-target="85"
+                                        data-target={((1 - heatingMetrics.mae / 1.5) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
@@ -274,13 +295,13 @@ function Model() {
                                         RMSE (lower better)
                                     </span>
                                     <span className="font-mono text-orange-400">
-                                        2.31
+                                        {heatingMetrics.rmse.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-orange-500 to-orange-300 rounded-full"
-                                        data-target="82"
+                                        data-target={((1 - heatingMetrics.rmse / 2.5) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
@@ -293,13 +314,13 @@ function Model() {
                                         MSE (lower better)
                                     </span>
                                     <span className="font-mono text-orange-400">
-                                        5.34
+                                        {heatingMetrics.mse.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-orange-500 to-orange-300 rounded-full"
-                                        data-target="78"
+                                        data-target={((1 - heatingMetrics.mse / 1.5) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
@@ -325,13 +346,13 @@ function Model() {
                                         R² Score
                                     </span>
                                     <span className="font-mono text-sky-400">
-                                        0.93
+                                        {coolingMetrics.r2.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-sky-500 to-cyan-300 rounded-full"
-                                        data-target="93"
+                                        data-target={coolingMetrics.r2 * 100}
                                         style={{
                                             width: "0%",
                                         }}
@@ -344,13 +365,13 @@ function Model() {
                                         MAE (lower better)
                                     </span>
                                     <span className="font-mono text-sky-400">
-                                        1.96
+                                        {coolingMetrics.mae.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-sky-500 to-cyan-300 rounded-full"
-                                        data-target="83"
+                                        data-target={((1 - coolingMetrics.mae / 2.0) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
@@ -363,13 +384,13 @@ function Model() {
                                         RMSE (lower better)
                                     </span>
                                     <span className="font-mono text-sky-400">
-                                        2.51
+                                        {coolingMetrics.rmse.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-sky-500 to-cyan-300 rounded-full"
-                                        data-target="80"
+                                        data-target={((1 - coolingMetrics.rmse / 3.0) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
@@ -382,13 +403,13 @@ function Model() {
                                         MSE (lower better)
                                     </span>
                                     <span className="font-mono text-sky-400">
-                                        6.28
+                                        {coolingMetrics.mse.toFixed(4)}
                                     </span>
                                 </div>
                                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                                     <div
                                         className="perf-bar h-full bg-linear-to-r from-sky-500 to-cyan-300 rounded-full"
-                                        data-target="76"
+                                        data-target={((1 - coolingMetrics.mse / 2.5) * 100).toFixed(0)}
                                         style={{
                                             width: "0%",
                                         }}
