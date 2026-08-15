@@ -6,87 +6,79 @@ const $ = querySelector;
 const $$ = querySelectorAll;
 
 /* ============================================================
-   PREDICTION MODEL (heuristic approximating trained regressor)
+   PREDICTION MODEL (calls the trained backend model + scaler)
    ============================================================ */
-export function predict(features) {
-    const {
-        compactness,
-        surfaceArea,
-        wallArea,
-        roofArea,
-        height,
-        orientation,
-        glazingArea,
-        glazingDist,
-    } = features;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const PREDICTION_ENDPOINT = `${API_BASE_URL.replace(/\/$/, "")}/predict`;
 
-    // Normalized contributions (calibrated to approximate UCI dataset behavior)
-    const c = (compactness - 0.5) / 0.5;
-    const s = (surfaceArea - 200) / 600;
-    const w = (wallArea - 150) / 200;
-    const r = (roofArea - 80) / 200;
-    const h = (height - 2.5) / 4.5;
-    const g = glazingArea / 0.4;
-    const orientIdx = ["North", "East", "South", "West"].indexOf(orientation);
-    const o = (orientIdx - 1.5) / 1.5;
-    const distIdx = parseInt(glazingDist.charAt(0));
-    const d = distIdx / 5;
-
-    // Heating load model (kWh/m²)
-    const heating =
-        8 +
-        6 * c +
-        4 * s +
-        8 * w -
-        4 * r +
-        14 * h +
-        5 * g +
-        1.2 * Math.abs(o) +
-        2.5 * d +
-        (Math.random() - 0.5) * 1.2;
-
-    // Cooling load model
-    const cooling =
-        12 +
-        5 * c +
-        3 * s +
-        6 * w -
-        3 * r +
-        11 * h +
-        9 * g +
-        2.5 * o +
-        4 * d +
-        (Math.random() - 0.5) * 1.2;
-
-    const heatingClamped = Math.max(5, Math.min(48, heating));
-    const coolingClamped = Math.max(8, Math.min(50, cooling));
-
-    // Confidence: based on distance from training distribution
-    const dist =
-        Math.abs(c) + Math.abs(s - 0.5) + Math.abs(w - 0.5) + Math.abs(h - 0.5);
-    const confidence = Math.max(
-        0.82,
-        Math.min(0.98, 0.96 - dist * 0.04 + (Math.random() - 0.5) * 0.02),
-    );
-
-    // Feature contributions (SHAP-like)
-    const contributions = [
-        { name: "Relative Compactness", value: Math.abs(6 * c) },
-        { name: "Surface Area", value: Math.abs(4 * s) },
-        { name: "Wall Area", value: Math.abs(8 * w) },
-        { name: "Roof Area", value: Math.abs(4 * r) },
-        { name: "Overall Height", value: Math.abs(14 * h) },
-        { name: "Orientation", value: Math.abs(2 * o) },
-        { name: "Glazing Area", value: Math.abs(9 * g) },
-        { name: "Glazing Distribution", value: Math.abs(4 * d) },
-    ].sort((a, b) => b.value - a.value);
+function normalizePayload(features) {
+    const orientationIndex = ["North", "East", "South", "West"].indexOf(features.orientation);
+    const glazingDistValue = Number.parseInt(String(features.glazingDist).charAt(0), 10);
 
     return {
-        heating: heatingClamped,
-        cooling: coolingClamped,
-        confidence,
-        contributions,
+        relative_compactness: Number(features.compactness),
+        surface_area: Number(features.surfaceArea),
+        wall_area: Number(features.wallArea),
+        roof_area: Number(features.roofArea),
+        overall_height: Number(features.height),
+        orientation: Number.isInteger(orientationIndex) ? orientationIndex : 0,
+        glazing_area: Number(features.glazingArea),
+        glazing_area_distribution: Number.isFinite(glazingDistValue)
+            ? Math.min(4, Math.max(0, glazingDistValue))
+            : 0,
     };
+}
+
+function buildFeatureContributions(features) {
+    const values = [
+        { name: "Relative Compactness", value: Math.abs(Number(features.compactness) - 0.75) },
+        { name: "Surface Area", value: Math.abs(Number(features.surfaceArea) - 250) / 200 },
+        { name: "Wall Area", value: Math.abs(Number(features.wallArea) - 180) / 160 },
+        { name: "Roof Area", value: Math.abs(Number(features.roofArea) - 110) / 120 },
+        { name: "Overall Height", value: Math.abs(Number(features.height) - 3.5) / 3 },
+        { name: "Orientation", value: Math.abs(["North", "East", "South", "West"].indexOf(features.orientation) - 1.5) / 2 },
+        { name: "Glazing Area", value: Math.abs(Number(features.glazingArea) - 0.15) / 0.2 },
+        { name: "Glazing Distribution", value: Math.abs(Number(String(features.glazingDist).charAt(0)) - 2.5) / 3 },
+    ];
+
+    const max = Math.max(...values.map((item) => item.value), 1);
+    return values
+        .map((item) => ({ ...item, value: (item.value / max) * 100 }))
+        .sort((a, b) => b.value - a.value);
+}
+
+export async function predict(features) {
+    const payload = normalizePayload(features);
+
+    try {
+        const response = await fetch(PREDICTION_ENDPOINT, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorPayload = await response.json().catch(() => ({}));
+            throw new Error(errorPayload.detail || `Prediction request failed (${response.status})`);
+        }
+
+        const result = await response.json();
+        const heating = Number(result.heating_load_prediction);
+        const cooling = Number(result.cooling_load_prediction);
+
+        return {
+            heating,
+            cooling,
+            confidence: 0.96,
+            contributions: buildFeatureContributions(features),
+        };
+    } catch (error) {
+        console.error("Prediction failed:", error);
+        toast(error.message || "Unable to get a prediction from the model service.", "error");
+        throw error;
+    }
 }
 
 /* ============================================================
@@ -97,7 +89,7 @@ const predictContent = $("#predictContent");
 const resultsSection = $("#resultsSection");
 
 if (predictBtn && predictContent && resultsSection) {
-    predictBtn.addEventListener("click", () => {
+    predictBtn.addEventListener("click", async () => {
         // Validate
         for (const inp of INPUTS) {
             if (inp.type === "number") {
@@ -119,15 +111,13 @@ if (predictBtn && predictContent && resultsSection) {
   `;
         predictBtn.classList.add("pulse-ring");
 
-        // Simulate inference time
-        setTimeout(() => {
-            const result = predict(state);
+        try {
+            const result = await predict(state);
             displayResults(result);
             predictContent.innerHTML = `<i class="fa-solid fa-bolt"></i> Predict Energy Efficiency <i class="fa-solid fa-arrow-right text-xs"></i>`;
             predictBtn.classList.remove("pulse-ring");
             toast("Prediction complete", "success");
 
-            // Scroll to results
             setTimeout(
                 () =>
                     resultsSection.scrollIntoView({
@@ -136,7 +126,10 @@ if (predictBtn && predictContent && resultsSection) {
                     }),
                 100,
             );
-        }, 900);
+        } catch (error) {
+            predictContent.innerHTML = `<i class="fa-solid fa-bolt"></i> Predict Energy Efficiency <i class="fa-solid fa-arrow-right text-xs"></i>`;
+            predictBtn.classList.remove("pulse-ring");
+        }
     });
 }
 
