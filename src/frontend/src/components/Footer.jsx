@@ -59,7 +59,7 @@ function Footer() {
                     </div>
                 </div>
                 <div className="mt-8 pt-6 border-t border-slate-800/50 text-center text-xs text-slate-500">
-                    © 2025 EE-ML Portfolio · Predicting sustainable architecture
+                    © 2026 EE-ML Portfolio · Predicting sustainable architecture
                     with machine learning.
                 </div>
             </div>
