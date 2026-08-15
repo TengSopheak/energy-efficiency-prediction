@@ -12,8 +12,7 @@ import Footer from './components/Footer';
 function App() {
     useEffect(() => {
         const id = requestAnimationFrame(() => {
-            import('./components/ui/ui-behaviors.js');
-            import('./components/ui/ThreeScene.js');
+            import('./index.js');
         });
 
         return () => cancelAnimationFrame(id);
