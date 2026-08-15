@@ -5,21 +5,19 @@ const $ = querySelector;
 const $$ = querySelectorAll;
 
 /* ============================================================
-   FEATURE IMPORTANCE (model section)
+   FEATURE IMPORTANCE (correlation-based EDA section)
    ============================================================ */
+// This follows the notebooks' "Feature Importance (|Correlation|)" analysis,
+// where X8 / glazing distribution and X7 / glazing area dominate and X1 is weakest.
 const IMPORTANCE = [
-    { name: "Overall Height", value: 0.32, color: "#10B981" },
-    { name: "Relative Compactness", value: 0.24, color: "#38BDF8" },
-    { name: "Roof Area", value: 0.18, color: "#60A5FA" },
-    { name: "Wall Area", value: 0.12, color: "#FB923C" },
-    { name: "Glazing Area", value: 0.08, color: "#34D399" },
-    { name: "Surface Area", value: 0.04, color: "#7DD3FC" },
-    { name: "Orientation", value: 0.015, color: "#FDBA74" },
-    {
-        name: "Glazing Distribution",
-        value: 0.005,
-        color: "#93C5FD",
-    },
+    { name: "Glazing Distribution", value: 0.52, color: "#10B981" },
+    { name: "Glazing Area", value: 0.48, color: "#38BDF8" },
+    { name: "Overall Height", value: 0.31, color: "#60A5FA" },
+    { name: "Wall Area", value: 0.22, color: "#FB923C" },
+    { name: "Roof Area", value: 0.18, color: "#34D399" },
+    { name: "Surface Area", value: 0.15, color: "#7DD3FC" },
+    { name: "Relative Compactness", value: 0.09, color: "#FDBA74" },
+    { name: "Orientation", value: 0.05, color: "#93C5FD" },
 ];
 const impChart = $("#importanceChart");
 impChart.innerHTML = IMPORTANCE.map(
@@ -76,12 +74,6 @@ const TECH = [
         icon: "fa-solid fa-calculator",
         color: "#013243",
         desc: "Numerical compute",
-    },
-    {
-        name: "TensorFlow",
-        icon: "fa-solid fa-network-wired",
-        color: "#FF6F00",
-        desc: "Neural networks",
     },
     {
         name: "FastAPI",

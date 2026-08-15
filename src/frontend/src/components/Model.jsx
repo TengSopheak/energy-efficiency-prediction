@@ -28,7 +28,7 @@ function Model() {
                         / 04 — Performance Metrics
                     </div>
                     <h2 className="font-display font-bold text-4xl lg:text-5xl leading-tight max-w-3xl">
-                        Validated accuracy across
+                        Final accuracy across
                         <span className="gradient-text"> both targets.</span>
                     </h2>
                 </div>

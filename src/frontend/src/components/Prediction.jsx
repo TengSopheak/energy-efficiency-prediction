@@ -180,7 +180,7 @@ function Prediction() {
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h3 className="font-display font-semibold text-xl mb-1">
-                                Feature Importance
+                                Feature Importance (Correlation)
                             </h3>
                             <p className="text-xs text-slate-400">
                                 Permutation importance from trained model ·
