@@ -95,7 +95,7 @@ function Hero() {
                             </div>
                             <div>
                                 <div className="font-mono text-3xl font-bold text-cyan-400">
-                                    0.92
+                                    0.99
                                 </div>
                                 <div className="text-xs text-slate-400 uppercase tracking-wider mt-1">
                                     R² Score
