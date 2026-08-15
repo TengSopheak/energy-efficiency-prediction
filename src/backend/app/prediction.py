@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # Configuration
-MODEL_ARTIFACT_DIR = Path("./src/backend/models")
+MODEL_ARTIFACT_DIR = Path("../models")
 MODEL_PATH = MODEL_ARTIFACT_DIR / "best_ee_model.pkl"
 SCALER_PATH = MODEL_ARTIFACT_DIR / "scaler.pkl"
 
