@@ -1,6 +1,7 @@
 # Runtime dependencies
 fastapi
 uvicorn[standard]
+gunicorn
 
 # Development dependencies
 # numpy
