@@ -7,7 +7,6 @@ based on building characteristics.
 
 import logging
 from pathlib import Path
-from typing import Optional
 
 import joblib
 import numpy as np
@@ -19,9 +18,8 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # Configuration
-MODEL_ARTIFACT_DIR = Path("../models")
-MODEL_PATH = MODEL_ARTIFACT_DIR / "best_ee_model.pkl"
-SCALER_PATH = MODEL_ARTIFACT_DIR / "scaler.pkl"
+MODEL_PATH = Path("./models/best_ee_model.pkl")
+SCALER_PATH = Path("./models/scaler.pkl")
 
 # Feature names for scaling and prediction
 SCALE_FEATURES = [
