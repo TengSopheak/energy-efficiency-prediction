@@ -5,9 +5,9 @@ gunicorn
 joblib
 numpy
 pandas
+scikit-learn==1.8.0
 
 # Development dependencies
-# scikit-learn==1.8.0
 # xgboost
 # lightgbm
 # matplotlib
