@@ -18,8 +18,8 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # Configuration
-MODEL_PATH = Path("./models/best_ee_model.pkl")
-SCALER_PATH = Path("./models/scaler.pkl")
+MODEL_PATH = Path("../models/best_ee_model.pkl")
+SCALER_PATH = Path("../models/scaler.pkl")
 
 # Feature names for scaling and prediction
 SCALE_FEATURES = [
