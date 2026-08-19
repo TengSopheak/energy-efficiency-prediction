@@ -47,9 +47,7 @@ function Demo() {
                     {/* LEFT: 3D Viewer */}
                     <div className="lg:col-span-7 reveal">
                         <div
-                            className="glass-strong rounded-3xl overflow-hidden relative"
-                            style={{ height: "620px" }}
-                        >
+                            className="glass-strong rounded-3xl overflow-hidden relative h-90 sm:h-110 lg:h-155">
                             <div
                                 id="three-container"
                                 className="w-full h-full"
@@ -119,9 +117,7 @@ function Demo() {
                     {/* RIGHT: Inputs */}
                     <div className="lg:col-span-5 reveal reveal-delay-1">
                         <div
-                            className="glass-strong rounded-3xl p-6 lg:p-7"
-                            style={{ maxHeight: "620px", overflowY: "auto" }}
-                        >
+                            className="glass-strong rounded-3xl p-6 lg:p-7 lg:h-155 lg:overflow-y-auto">
                             <div className="flex items-center justify-between mb-6 sticky top-0 bg-slate-900/80 backdrop-blur py-2 -mx-6 px-6 lg:-mx-7 lg:px-7 z-10">
                                 <div>
                                     <h3 className="font-display font-semibold text-xl">

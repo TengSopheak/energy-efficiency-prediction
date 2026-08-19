@@ -6,7 +6,6 @@ based on building characteristics.
 """
 
 import logging
-import os
 from pathlib import Path
 
 import joblib
@@ -19,23 +18,9 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 # Configuration
-BACKEND_DIR = Path(__file__).resolve().parent.parent
-DEFAULT_MODEL_DIR = BACKEND_DIR / "models"
-
-def resolve_artifact_path(filename: str, env_var: str) -> Path:
-    """Resolve model/scaler artifacts from an environment override or the backend model directory."""
-    configured = os.getenv(env_var)
-    if configured:
-        candidate = Path(configured).expanduser()
-        if not candidate.is_absolute():
-            candidate = (BACKEND_DIR / candidate).resolve()
-        return candidate
-
-    return (DEFAULT_MODEL_DIR / filename).resolve()
-
-
-MODEL_PATH = resolve_artifact_path("best_ee_model.pkl", "MODEL_PATH")
-SCALER_PATH = resolve_artifact_path("scaler.pkl", "SCALER_PATH")
+MODEL_ARTIFACT_DIR = Path("../models")
+MODEL_PATH = MODEL_ARTIFACT_DIR / "best_ee_model.pkl"
+SCALER_PATH = MODEL_ARTIFACT_DIR / "scaler.pkl"
 
 # Feature names for scaling and prediction
 SCALE_FEATURES = [
